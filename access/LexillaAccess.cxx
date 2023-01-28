@@ -11,7 +11,6 @@
 #include <cstring>
 
 #include <string>
-#include <string_view>
 #include <vector>
 #include <set>
 
@@ -51,7 +50,7 @@ T FunctionPointer(Function function) noexcept {
 
 #if _WIN32
 
-std::wstring WideStringFromUTF8(std::string_view sv) {
+std::wstring WideStringFromUTF8(std::string const& sv) {
 	const int sLength = static_cast<int>(sv.length());
 	const int cchWide = ::MultiByteToWideChar(CP_UTF8, 0, sv.data(), sLength, nullptr, 0);
 	std::wstring sWide(cchWide, 0);
@@ -88,8 +87,8 @@ Function FindSymbol(Module m, const char *symbol) noexcept {
 
 Lexilla::CreateLexerFn pCreateLexerDefault = nullptr;
 
-bool NameContainsDot(std::string_view path) noexcept {
-	for (std::string_view::const_reverse_iterator it = path.crbegin();
+bool NameContainsDot(std::string const& path) noexcept {
+	for (std::string::const_reverse_iterator it = path.crbegin();
 	     it != path.crend(); ++it) {
 		if (*it == '.')
 			return true;
@@ -105,16 +104,16 @@ void Lexilla::SetDefault(CreateLexerFn pCreate) noexcept {
 	pCreateLexerDefault = pCreate;
 }
 
-void Lexilla::SetDefaultDirectory(std::string_view directory) {
+void Lexilla::SetDefaultDirectory(std::string const& directory) {
 	directoryLoadDefault = directory;
 }
 
-bool Lexilla::Load(std::string_view sharedLibraryPaths) {
+bool Lexilla::Load(std::string const& sharedLibraryPaths) {
 	if (sharedLibraryPaths == lastLoaded) {
 		return !fnCLs.empty();
 	}
 
-	std::string_view paths = sharedLibraryPaths;
+	std::string paths = sharedLibraryPaths;
 	lexers.clear();
 
 	fnCLs.clear();
@@ -125,9 +124,9 @@ bool Lexilla::Load(std::string_view sharedLibraryPaths) {
 		const size_t separator = paths.find_first_of(';');
 		std::string path(paths.substr(0, separator));
 		if (separator == std::string::npos) {
-			paths.remove_prefix(paths.size());
+			paths = paths.substr(paths.size());
 		} else {
-			paths.remove_prefix(separator + 1);
+			paths = paths.substr(separator + 1);
 		}
 		if (path == ".") {
 			if (directoryLoadDefault.empty()) {
@@ -190,15 +189,15 @@ bool Lexilla::Load(std::string_view sharedLibraryPaths) {
 	for (GetLibraryPropertyNamesFn fnGLPN : fnGLPNs) {
 		const char *cpNames = fnGLPN();
 		if (cpNames) {
-			std::string_view names = cpNames;
+			std::string names = cpNames;
 			while (!names.empty()) {
 				const size_t separator = names.find_first_of('\n');
 				std::string name(names.substr(0, separator));
 				nameSet.insert(name);
 				if (separator == std::string::npos) {
-					names.remove_prefix(names.size());
+					names = names.substr(names.size());
 				} else {
-					names.remove_prefix(separator + 1);
+					names = names.substr(separator + 1);
 				}
 			}
 		}
@@ -209,7 +208,7 @@ bool Lexilla::Load(std::string_view sharedLibraryPaths) {
 	return !fnCLs.empty();
 }
 
-Scintilla::ILexer5 *Lexilla::MakeLexer(std::string_view languageName) {
+Scintilla::ILexer5 *Lexilla::MakeLexer(std::string const& languageName) {
 	std::string sLanguageName(languageName);	// Ensure NUL-termination
 	for (CreateLexerFn fnCL : fnCLs) {
 		Scintilla::ILexer5 *pLexer = fnCL(sLanguageName.c_str());

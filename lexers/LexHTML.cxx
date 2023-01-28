@@ -15,6 +15,7 @@
 #include <map>
 #include <set>
 
+#include "Compat.h"
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
@@ -865,7 +866,7 @@ public:
 			isXml_ ? "xml" : (isPHPScript_ ? "phpscript" : "hypertext"),
 			isXml_ ? SCLEX_XML : (isPHPScript_ ? SCLEX_PHPSCRIPT : SCLEX_HTML),
 			isXml_ ? lexicalClassesHTML : lexicalClassesXML,
-			isXml_ ? std::size(lexicalClassesHTML) : std::size(lexicalClassesXML)),
+			isXml_ ? Sci::size(lexicalClassesHTML) : Sci::size(lexicalClassesXML)),
 		isXml(isXml_),
 		isPHPScript(isPHPScript_),
 		osHTML(isPHPScript_),

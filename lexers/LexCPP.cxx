@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <iterator>
 
+#include "Compat.h"
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
@@ -493,7 +494,7 @@ LexicalClass lexicalClasses[] = {
 	27, "SCE_C_ESCAPESEQUENCE", "literal string escapesequence", "Escape sequence",
 };
 
-const int sizeLexicalClasses = static_cast<int>(std::size(lexicalClasses));
+const int sizeLexicalClasses = static_cast<int>(Sci::size(lexicalClasses));
 
 }
 
