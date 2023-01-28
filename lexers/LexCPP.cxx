@@ -518,7 +518,7 @@ class LexerCPP : public ILexer5 {
 	struct SymbolValue {
 		std::string value;
 		std::string arguments;
-		SymbolValue() noexcept = default;
+		SymbolValue() = default;
 		SymbolValue(const std::string &value_, const std::string &arguments_) : value(value_), arguments(arguments_) {
 		}
 		SymbolValue &operator = (const std::string &value_) {

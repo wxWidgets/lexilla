@@ -88,10 +88,10 @@ public:
 protected:
 	struct Terminator
 	{
-		int Style = SCE_X12_BAD;
-		Sci_PositionU pos = 0;
-		Sci_PositionU length = 0;
-		int FoldChange = 0;
+		int Style;// = SCE_X12_BAD;
+		Sci_PositionU pos;// = 0;
+		Sci_PositionU length;// = 0;
+		int FoldChange;// = 0;
 	};
 	Terminator InitialiseFromISA(IDocument *pAccess);
 	Sci_PositionU FindPreviousSegmentStart(IDocument *pAccess, Sci_Position startPos) const;

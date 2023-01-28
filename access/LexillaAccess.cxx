@@ -42,7 +42,7 @@ constexpr const char *pathSeparator = "/";
 /// This avoids undefined and conditionally defined behaviour.
 template<typename T>
 T FunctionPointer(Function function) noexcept {
-	static_assert(sizeof(T) == sizeof(function));
+	static_assert(sizeof(T) == sizeof(function), "sizeof(function)");
 	T fp {};
 	memcpy(&fp, &function, sizeof(T));
 	return fp;
