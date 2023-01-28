@@ -343,6 +343,7 @@ EXPORT_FUNCTION ILexer5 * CALLING_CONVENTION CreateLexer(const char *name) {
 }
 
 EXPORT_FUNCTION const char * CALLING_CONVENTION LexerNameFromID(int identifier) {
+	AddEachLexer();
 	const LexerModule *pModule = catalogueLexilla.Find(identifier);
 	if (pModule) {
 		return pModule->languageName;
