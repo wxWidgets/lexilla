@@ -14,7 +14,7 @@
 #include <vector>
 #include <set>
 
-#if !_WIN32
+#if !defined(_WIN32)
 #include <dlfcn.h>
 #else
 #include <windows.h>
@@ -28,7 +28,7 @@
 
 namespace {
 
-#if _WIN32
+#if defined(_WIN32)
 typedef FARPROC Function;
 typedef HMODULE Module;
 constexpr const char *pathSeparator = "\\";
@@ -48,7 +48,7 @@ T FunctionPointer(Function function) noexcept {
 	return fp;
 }
 
-#if _WIN32
+#if defined(_WIN32)
 
 std::wstring WideStringFromUTF8(std::string const& sv) {
 	const int sLength = static_cast<int>(sv.length());
@@ -78,7 +78,7 @@ std::vector<std::string> libraryProperties;
 std::vector<Lexilla::SetLibraryPropertyFn> fnSLPs;
 
 Function FindSymbol(Module m, const char *symbol) noexcept {
-#if _WIN32
+#if defined(_WIN32)
 	return ::GetProcAddress(m, symbol);
 #else
 	return dlsym(m, symbol);
@@ -141,7 +141,7 @@ bool Lexilla::Load(std::string const& sharedLibraryPaths) {
 			// No '.' in name so add extension
 			path.append(LEXILLA_EXTENSION);
 		}
-#if _WIN32
+#if defined(_WIN32)
 		// Convert from UTF-8 to wide characters
 		std::wstring wsPath = WideStringFromUTF8(path);
 		Module lexillaDL = ::LoadLibraryW(wsPath.c_str());

@@ -26,7 +26,7 @@ bool Load(std::string const& sharedLibraryPaths);
 Scintilla::ILexer5 *MakeLexer(std::string const& languageName);
 
 std::vector<std::string> Lexers();
-[[deprecated]] std::string NameFromID(int identifier);
+/*[[deprecated]]*/ std::string NameFromID(int identifier);
 std::vector<std::string> LibraryProperties();
 void SetProperty(const char *key, const char *value);
 
