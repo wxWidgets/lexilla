@@ -10,7 +10,7 @@
 #define LEXILLA_H
 
 // Define the default Lexilla shared library name for each platform
-#if _WIN32
+#if defined(_WIN32)
 #define LEXILLA_LIB "lexilla"
 #define LEXILLA_EXTENSION ".dll"
 #else
@@ -23,7 +23,7 @@
 #endif
 
 // On Win32 use the stdcall calling convention otherwise use the standard calling convention
-#if _WIN32
+#if defined(_WIN32)
 #define LEXILLA_CALL __stdcall
 #else
 #define LEXILLA_CALL
@@ -58,7 +58,7 @@ typedef int (LEXILLA_CALL *GetLexerCountFn)();
 typedef void (LEXILLA_CALL *GetLexerNameFn)(unsigned int Index, char *name, int buflength);
 typedef LexerFactoryFunction(LEXILLA_CALL *GetLexerFactoryFn)(unsigned int Index);
 typedef ILexer5*(LEXILLA_CALL *CreateLexerFn)(const char *name);
-DEPRECATE_DEFINITION typedef const char *(LEXILLA_CALL *LexerNameFromIDFn)(int identifier);
+/*DEPRECATE_DEFINITION*/ typedef const char *(LEXILLA_CALL *LexerNameFromIDFn)(int identifier);
 typedef const char *(LEXILLA_CALL *GetLibraryPropertyNamesFn)();
 typedef void(LEXILLA_CALL *SetLibraryPropertyFn)(const char *key, const char *value);
 
@@ -84,7 +84,7 @@ ILexer5 * LEXILLA_CALL CreateLexer(const char *name);
 int LEXILLA_CALL GetLexerCount();
 void LEXILLA_CALL GetLexerName(unsigned int index, char *name, int buflength);
 LexerFactoryFunction LEXILLA_CALL GetLexerFactory(unsigned int index);
-DEPRECATE_DEFINITION const char *LEXILLA_CALL LexerNameFromID(int identifier);
+/*DEPRECATE_DEFINITION*/ const char *LEXILLA_CALL LexerNameFromID(int identifier);
 const char * LEXILLA_CALL GetLibraryPropertyNames();
 void LEXILLA_CALL SetLibraryProperty(const char *key, const char *value);
 

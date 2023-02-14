@@ -11,7 +11,7 @@
 #include <vector>
 #include <initializer_list>
 
-#if _WIN32
+#if defined(_WIN32)
 #define EXPORT_FUNCTION __declspec(dllexport)
 #define CALLING_CONVENTION __stdcall
 #else
@@ -343,6 +343,7 @@ EXPORT_FUNCTION ILexer5 * CALLING_CONVENTION CreateLexer(const char *name) {
 }
 
 EXPORT_FUNCTION const char * CALLING_CONVENTION LexerNameFromID(int identifier) {
+	AddEachLexer();
 	const LexerModule *pModule = catalogueLexilla.Find(identifier);
 	if (pModule) {
 		return pModule->languageName;

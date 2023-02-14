@@ -102,7 +102,7 @@ struct FSharpString {
 		startPos = ZERO_LENGTH;
 		startChar = '"';
 	}
-	constexpr bool HasLength() const {
+	inline bool HasLength() const {
 		return startPos > ZERO_LENGTH;
 	}
 };
@@ -175,7 +175,7 @@ public:
 				break;
 		}
 	}
-	constexpr bool AtEnd() noexcept {
+	constexpr bool AtEnd() const noexcept {
 		return invalid || type == Notation::none || (type != Notation::none && toEnd < 0);
 	}
 };

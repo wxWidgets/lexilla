@@ -12,7 +12,7 @@
 namespace Lexilla {
  
 // Directory to load default Lexilla from, commonly the directory of the application.
-void SetDefaultDirectory(std::string_view directory);
+void SetDefaultDirectory(std::string const& directory);
 
 // Specify CreateLexer when statically linked so no hard dependency in LexillaAccess
 // so it doesn't have to be built in two forms - static and dynamic.
@@ -21,12 +21,12 @@ void SetDefault(CreateLexerFn pCreate) noexcept;
 // sharedLibraryPaths is a ';' separated list of shared libraries to load.
 // On Win32 it is treated as UTF-8 and on Unix it is passed to dlopen directly.
 // Return true if any shared libraries are loaded.
-bool Load(std::string_view sharedLibraryPaths);
+bool Load(std::string const& sharedLibraryPaths);
 
-Scintilla::ILexer5 *MakeLexer(std::string_view languageName);
+Scintilla::ILexer5 *MakeLexer(std::string const& languageName);
 
 std::vector<std::string> Lexers();
-[[deprecated]] std::string NameFromID(int identifier);
+/*[[deprecated]]*/ std::string NameFromID(int identifier);
 std::vector<std::string> LibraryProperties();
 void SetProperty(const char *key, const char *value);
 
