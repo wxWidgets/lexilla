@@ -22,6 +22,10 @@
 #include "LexerModule.h"
 #include "DefaultLexer.h"
 
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 using namespace Scintilla;
 
 class LexerX12 : public DefaultLexer
