@@ -12,17 +12,16 @@
 
 #include <utility>
 #include <string>
-#include <string_view>
 #include <vector>
 #include <map>
 #include <algorithm>
 #include <iterator>
 #include <functional>
 
-#include "Compat.h"
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
+#include "LexillaCompat.h"
 
 #include "StringCopy.h"
 #include "WordList.h"
@@ -92,7 +91,7 @@ constexpr bool IsSpaceOrTab(int ch) noexcept {
 	return ch == ' ' || ch == '\t';
 }
 
-constexpr bool IsOperatorOrSpace(int ch) noexcept {
+inline bool IsOperatorOrSpace(int ch) noexcept {
 	return isoperator(ch) || IsASpace(ch);
 }
 
@@ -188,7 +187,7 @@ public:
 			escapeSetValid = &setOctDigits;
 		}
 	}
-	[[nodiscard]] bool atEscapeEnd(int currChar) const noexcept {
+	wxNODISCARD bool atEscapeEnd(int currChar) const noexcept {
 		return (digitsLeft <= 0) || !escapeSetValid->Contains(currChar);
 	}
 	void consumeDigit() noexcept {
@@ -257,7 +256,7 @@ class LinePPState {
 	// level is the nesting level of #if constructs
 	int level = -1;
 	static const int maximumNestingLevel = 31;
-	[[nodiscard]] int maskLevel() const noexcept {
+	wxNODISCARD int maskLevel() const noexcept {
 		if (level >= 0) {
 			return 1 << level;
 		}
@@ -265,19 +264,19 @@ class LinePPState {
 	}
 public:
 	LinePPState() noexcept = default;
-	[[nodiscard]] bool ValidLevel() const noexcept {
+	wxNODISCARD bool ValidLevel() const noexcept {
 		return level >= 0 && level < maximumNestingLevel;
 	}
-	[[nodiscard]] bool IsActive() const noexcept {
+	wxNODISCARD bool IsActive() const noexcept {
 		return state == 0;
 	}
-	[[nodiscard]] bool IsInactive() const noexcept {
+	wxNODISCARD bool IsInactive() const noexcept {
 		return state != 0;
 	}
-	[[nodiscard]] int ActiveState() const noexcept {
+	wxNODISCARD int ActiveState() const noexcept {
 		return state ? inactiveFlag : 0;
 	}
-	[[nodiscard]] bool CurrentIfTaken() const noexcept {
+	wxNODISCARD bool CurrentIfTaken() const noexcept {
 		return (ifTaken & maskLevel()) != 0;
 	}
 	void StartSection(bool on) noexcept {
@@ -312,7 +311,7 @@ public:
 class PPStates {
 	std::vector<LinePPState> vlls;
 public:
-	[[nodiscard]] LinePPState ForLine(Sci_Position line) const noexcept {
+	wxNODISCARD LinePPState ForLine(Sci_Position line) const noexcept {
 		if ((line > 0) && (vlls.size() > static_cast<size_t>(line))) {
 			return vlls[line];
 		}
@@ -515,7 +514,7 @@ class LexerCPP : public ILexer5 {
 			arguments.clear();
 			return *this;
 		}
-		[[nodiscard]] bool IsMacro() const noexcept {
+		wxNODISCARD bool IsMacro() const noexcept {
 			return !arguments.empty();
 		}
 	};
@@ -678,7 +677,7 @@ public:
 		return style & ~inactiveFlag;
 	}
 	void EvaluateTokens(Tokens &tokens, const SymbolTable &preprocessorDefinitions);
-	[[nodiscard]] Tokens Tokenize(const std::string &expr) const;
+	wxNODISCARD Tokens Tokenize(const std::string &expr) const;
 	bool EvaluateExpression(const std::string &expr, const SymbolTable &preprocessorDefinitions);
 };
 
@@ -958,11 +957,11 @@ void SCI_METHOD LexerCPP::Lex(Sci_PositionU startPos, Sci_Position length, int i
 					}
 					const bool literalString = sc.ch == '\"';
 					if (literalString || sc.ch == '\'') {
-						std::string_view s = currentText;
+						std::string s = currentText;
 						size_t lenS = s.length();
 						const bool raw = literalString && sc.chPrev == 'R' && !setInvalidRawFirst.Contains(sc.chNext);
 						if (raw) {
-							s.remove_suffix(1);
+							s.pop_back();
 							lenS--;
 						}
 						const bool valid =
