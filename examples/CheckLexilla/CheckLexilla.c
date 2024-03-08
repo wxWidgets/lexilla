@@ -39,23 +39,23 @@ GCC or Clang or as C++.
 
 #include <stdio.h>
 
-#if _WIN32
+#if defined(_WIN32)
 #include <windows.h>
 #else
 #include <dlfcn.h>
 #endif
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 #include "ILexer.h"
 #endif
 
 #include "Lexilla.h"
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 using namespace Lexilla;
 #endif
 
-#if _WIN32
+#if defined(_WIN32)
 typedef FARPROC Function;
 typedef HMODULE Module;
 #else
@@ -64,7 +64,7 @@ typedef void *Module;
 #endif
 
 static Function FindSymbol(Module m, const char *symbol) {
-#if _WIN32
+#if defined(_WIN32)
 	return GetProcAddress(m, symbol);
 #else
 	return dlsym(m, symbol);
@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 	if (argc > 1) {
 		libPath = argv[1];
 	}
-#if _WIN32
+#if defined(_WIN32)
 	Module lexillaLibrary = LoadLibraryA(libPath);
 #else
 	Module lexillaLibrary = dlopen(libPath, RTLD_LAZY);
@@ -130,6 +130,14 @@ int main(int argc, char *argv[]) {
 				librarySetProperty("key", "value");
 			} else {
 				printf("Set property not supported.\n");
+			}
+
+			GetNameSpaceFn libraryNameSpace = (GetLibraryPropertyNamesFn)FindSymbol(lexillaLibrary, LEXILLA_GETNAMESPACE);
+			if (libraryNameSpace) {
+				const char *nameSpace = libraryNameSpace();
+				printf("Name space '%s'.\n", nameSpace);
+			} else {
+				printf("Name space not supported.\n");
 			}
 		}
 	}

@@ -36,4 +36,28 @@ echo word ^
 1
 command
 
+:: Bug argument and variable expansion
+echo %~dp0123
+echo %%-~012
+echo %%~%%~-abcd
+FOR /F %%I in ("C:\Test\temp.txt") do echo %%~dI
+
+:: Bug ending of argument and variable expansion
+echo %~dp0\123
+echo "%~dp0123"
+echo "%%-~012"
+echo "%%~%%~-abcd"
+FOR /F %%I in ("C:\Test\temp.txt") do echo "%%~dI"
+
+:: Bug escaped %
+echo %%0
+echo %%%0
+echo %%%%~-abcd
+
+:TEST that after label style works
+:: Bug 2304: "::" comments not recognised when second command on line
+Set /A xxx=%xxx%+1 & :: Increment
+Set /A xxx=%xxx%+1 & ::Increment
+Set /A xxx=%xxx%+1 & rem Increment
+
 :END

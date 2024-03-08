@@ -1,6 +1,5 @@
 *.o
 *.a
-*.asm
 *.lib
 *.obj
 *.iobj
@@ -27,6 +26,7 @@ __pycache__
 *.bsc
 *.intermediate.manifest
 *.lastbuildstate
+*.nativecodeanalysis.xml
 *.cache
 *.ilk
 *.ncb
@@ -40,6 +40,7 @@ win32/*.plist
 *.mode1v3
 *.pbxuser
 *.pbproj
+*.tgz
 *.log
 *.xcbkptlist
 *.xcuserstate
@@ -48,8 +49,8 @@ xcuserdata/
 xcschememanagement.plist
 .DS_Store
 test/TestLexers
-Debug
 Release
+Debug
 x64
 ARM64
 cocoa/build
@@ -57,11 +58,14 @@ cocoa/ScintillaFramework/build
 cocoa/ScintillaTest/build
 macosx/SciTest/build
 *.cppcheck
+*.pro.user
+.qmake.stash
 cov-int
-*.tgz
 .vs
 meson-private
 meson-logs
 build.ninja
 .ninja*
 compile_commands.json
+.vscode/
+VTune Profiler Results/

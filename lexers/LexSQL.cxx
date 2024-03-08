@@ -15,9 +15,11 @@
 #include <ctype.h>
 
 #include <string>
+#include <string_view>
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <functional>
 
 #include "ILexer.h"
 #include "Scintilla.h"
@@ -34,6 +36,7 @@
 #include "DefaultLexer.h"
 
 using namespace Scintilla;
+using namespace Lexilla;
 
 static inline bool IsAWordChar(int ch, bool sqlAllowDottedWord) {
 	if (!sqlAllowDottedWord)
@@ -283,9 +286,11 @@ struct OptionSetSQL : public OptionSet<OptionsSQL> {
 
 		DefineProperty("fold.compact", &OptionsSQL::foldCompact);
 
-		DefineProperty("fold.sql.only.begin", &OptionsSQL::foldOnlyBegin);
+		DefineProperty("fold.sql.only.begin", &OptionsSQL::foldOnlyBegin,
+		               "Set to 1 to only fold on 'begin' but not other keywords.");
 
-		DefineProperty("lexer.sql.backticks.identifier", &OptionsSQL::sqlBackticksIdentifier);
+		DefineProperty("lexer.sql.backticks.identifier", &OptionsSQL::sqlBackticksIdentifier,
+		               "Recognise backtick quoting of identifiers.");
 
 		DefineProperty("lexer.sql.numbersign.comment", &OptionsSQL::sqlNumbersignComment,
 		               "If \"lexer.sql.numbersign.comment\" property is set to 0 a line beginning with '#' will not be a comment.");

@@ -13,6 +13,9 @@
 #include <assert.h>
 #include <ctype.h>
 
+#include <string>
+#include <string_view>
+
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
@@ -24,7 +27,7 @@
 #include "CharacterSet.h"
 #include "LexerModule.h"
 
-using namespace Scintilla;
+using namespace Lexilla;
 
 /*
 // located in SciLexer.h
@@ -136,6 +139,8 @@ static int calculateFoldNsis(Sci_PositionU start, Sci_PositionU end, int foldlev
 
   int newFoldlevel = foldlevel;
   bool bIgnoreCase = false;
+  // property nsis.ignorecase
+  // Set to 1 to ignore case for NSIS.
   if( styler.GetPropertyInt("nsis.ignorecase") == 1 )
     bIgnoreCase = true;
 
@@ -174,6 +179,8 @@ static int classifyWordNsis(Sci_PositionU start, Sci_PositionU end, WordList *ke
     bIgnoreCase = true;
 
   bool bUserVars = false;
+  // property nsis.uservars
+  // Set to 1 to recognise user defined variables in NSIS.
   if( styler.GetPropertyInt("nsis.uservars") == 1 )
     bUserVars = true;
 

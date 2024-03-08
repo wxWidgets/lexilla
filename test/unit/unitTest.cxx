@@ -1,4 +1,6 @@
-// Unit Tests for Lexilla internal data structures
+/** @file unitTest.cxx
+ ** Unit Tests for Lexilla internal data structures
+ **/
 
 /*
     Currently tested:

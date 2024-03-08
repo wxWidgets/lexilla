@@ -1,7 +1,12 @@
 # Test lexers
 # build lexilla.so and TestLexers then run TestLexers
+JOBS="--jobs=$(getconf _NPROCESSORS_ONLN)"
+(
 cd ../src
-make
+make "$JOBS" DEBUG=1
+)
+(
 cd ../test
-make
+make DEBUG=1
 make test
+)

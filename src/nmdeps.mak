@@ -33,6 +33,16 @@ $(DIR_O)/DefaultLexer.obj: \
 	../lexlib/Accessor.h \
 	../lexlib/LexerModule.h \
 	../lexlib/DefaultLexer.h
+$(DIR_O)/InList.obj: \
+	../lexlib/InList.cxx \
+	../lexlib/InList.h \
+	../lexlib/CharacterSet.h
+$(DIR_O)/LexAccessor.obj: \
+	../lexlib/LexAccessor.cxx \
+	../../scintilla/include/ILexer.h \
+	../../scintilla/include/Sci_Position.h \
+	../lexlib/LexAccessor.h \
+	../lexlib/CharacterSet.h
 $(DIR_O)/LexerBase.obj: \
 	../lexlib/LexerBase.cxx \
 	../../scintilla/include/ILexer.h \
@@ -146,6 +156,18 @@ $(DIR_O)/LexAPDL.obj: \
 	../lexlib/StyleContext.h \
 	../lexlib/CharacterSet.h \
 	../lexlib/LexerModule.h
+$(DIR_O)/LexAsciidoc.obj: \
+	../lexers/LexAsciidoc.cxx \
+	../../scintilla/include/ILexer.h \
+	../../scintilla/include/Sci_Position.h \
+	../../scintilla/include/Scintilla.h \
+	../include/SciLexer.h \
+	../lexlib/WordList.h \
+	../lexlib/LexAccessor.h \
+	../lexlib/Accessor.h \
+	../lexlib/StyleContext.h \
+	../lexlib/CharacterSet.h \
+	../lexlib/LexerModule.h
 $(DIR_O)/LexAsm.obj: \
 	../lexers/LexAsm.cxx \
 	../../scintilla/include/ILexer.h \
@@ -239,6 +261,7 @@ $(DIR_O)/LexBash.obj: \
 	../../scintilla/include/Scintilla.h \
 	../include/SciLexer.h \
 	../lexlib/StringCopy.h \
+	../lexlib/InList.h \
 	../lexlib/WordList.h \
 	../lexlib/LexAccessor.h \
 	../lexlib/StyleContext.h \
@@ -266,6 +289,7 @@ $(DIR_O)/LexBatch.obj: \
 	../../scintilla/include/Sci_Position.h \
 	../../scintilla/include/Scintilla.h \
 	../include/SciLexer.h \
+	../lexlib/InList.h \
 	../lexlib/WordList.h \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
@@ -303,7 +327,6 @@ $(DIR_O)/LexCaml.obj: \
 	../../scintilla/include/Sci_Position.h \
 	../../scintilla/include/Scintilla.h \
 	../include/SciLexer.h \
-	../lexlib/PropSetSimple.h \
 	../lexlib/WordList.h \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
@@ -551,6 +574,7 @@ $(DIR_O)/LexErrorList.obj: \
 	../../scintilla/include/Sci_Position.h \
 	../../scintilla/include/Scintilla.h \
 	../include/SciLexer.h \
+	../lexlib/InList.h \
 	../lexlib/WordList.h \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
@@ -630,6 +654,23 @@ $(DIR_O)/LexGAP.obj: \
 	../lexlib/StyleContext.h \
 	../lexlib/CharacterSet.h \
 	../lexlib/LexerModule.h
+$(DIR_O)/LexGDScript.obj: \
+	../lexers/LexGDScript.cxx \
+	../../scintilla/include/ILexer.h \
+	../../scintilla/include/Sci_Position.h \
+	../../scintilla/include/Scintilla.h \
+	../include/SciLexer.h \
+	../lexlib/StringCopy.h \
+	../lexlib/WordList.h \
+	../lexlib/LexAccessor.h \
+	../lexlib/Accessor.h \
+	../lexlib/StyleContext.h \
+	../lexlib/CharacterSet.h \
+	../lexlib/CharacterCategory.h \
+	../lexlib/LexerModule.h \
+	../lexlib/OptionSet.h \
+	../lexlib/SubStyles.h \
+	../lexlib/DefaultLexer.h
 $(DIR_O)/LexGui4Cli.obj: \
 	../lexers/LexGui4Cli.cxx \
 	../../scintilla/include/ILexer.h \
@@ -734,6 +775,23 @@ $(DIR_O)/LexJSON.obj: \
 	../lexlib/LexerModule.h \
 	../lexlib/OptionSet.h \
 	../lexlib/DefaultLexer.h
+$(DIR_O)/LexJulia.obj: \
+	../lexers/LexJulia.cxx \
+	../../scintilla/include/ILexer.h \
+	../../scintilla/include/Sci_Position.h \
+	../../scintilla/include/Scintilla.h \
+	../include/SciLexer.h \
+	../lexlib/StringCopy.h \
+	../lexlib/PropSetSimple.h \
+	../lexlib/WordList.h \
+	../lexlib/LexAccessor.h \
+	../lexlib/Accessor.h \
+	../lexlib/StyleContext.h \
+	../lexlib/CharacterSet.h \
+	../lexlib/CharacterCategory.h \
+	../lexlib/LexerModule.h \
+	../lexlib/OptionSet.h \
+	../lexlib/DefaultLexer.h
 $(DIR_O)/LexKix.obj: \
 	../lexers/LexKix.cxx \
 	../../scintilla/include/ILexer.h \
@@ -803,13 +861,14 @@ $(DIR_O)/LexLua.obj: \
 	../../scintilla/include/Sci_Position.h \
 	../../scintilla/include/Scintilla.h \
 	../include/SciLexer.h \
-	../lexlib/StringCopy.h \
 	../lexlib/WordList.h \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
 	../lexlib/StyleContext.h \
 	../lexlib/CharacterSet.h \
-	../lexlib/LexerModule.h
+	../lexlib/LexerModule.h \
+	../lexlib/OptionSet.h \
+	../lexlib/DefaultLexer.h
 $(DIR_O)/LexMagik.obj: \
 	../lexers/LexMagik.cxx \
 	../../scintilla/include/ILexer.h \
@@ -1159,7 +1218,6 @@ $(DIR_O)/LexPython.obj: \
 	../../scintilla/include/Sci_Position.h \
 	../../scintilla/include/Scintilla.h \
 	../include/SciLexer.h \
-	../lexlib/StringCopy.h \
 	../lexlib/WordList.h \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \

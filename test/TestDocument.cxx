@@ -40,6 +40,7 @@ namespace {
 	};
 
 	int UnicodeFromUTF8(const unsigned char *us) noexcept {
+		assert(us);
 		switch (UTF8BytesOfLead[us[0]]) {
 		case 1:
 			return us[0];
@@ -56,21 +57,83 @@ namespace {
 		return (ch >= 0x80) && (ch < 0xc0);
 	}
 
+	constexpr unsigned char TrailByteValue(unsigned char c) {
+		// The top 2 bits are 0b10 to indicate a trail byte.
+		// The lower 6 bits contain the value.
+		return c & 0b0011'1111;
+	}
+}
+
+std::u32string UTF32FromUTF8(std::string_view svu8) {
+	std::u32string ret;
+	for (size_t i = 0; i < svu8.length();) {
+		unsigned char ch = svu8.at(i);
+		const unsigned int byteCount = UTF8BytesOfLead[ch];
+		unsigned int value = 0;
+
+		if (i + byteCount > svu8.length()) {
+			// Trying to read past end
+			ret.push_back(ch);
+			break;
+		}
+
+		i++;
+		switch (byteCount) {
+		case 1:
+			value = ch;
+			break;
+		case 2:
+			value = (ch & 0x1F) << 6;
+			ch = svu8.at(i++);
+			value += TrailByteValue(ch);
+			break;
+		case 3:
+			value = (ch & 0xF) << 12;
+			ch = svu8.at(i++);
+			value += TrailByteValue(ch) << 6;
+			ch = svu8.at(i++);
+			value += TrailByteValue(ch);
+			break;
+		default:
+			value = (ch & 0x7) << 18;
+			ch = svu8.at(i++);
+			value += TrailByteValue(ch) << 12;
+			ch = svu8.at(i++);
+			value += TrailByteValue(ch) << 6;
+			ch = svu8.at(i++);
+			value += TrailByteValue(ch);
+			break;
+		}
+		ret.push_back(value);
+	}
+	return ret;
 }
 
 void TestDocument::Set(std::string_view sv) {
 	text = sv;
-	textStyles.resize(text.size());
+	textStyles.resize(text.size() + 1);
 	lineStarts.clear();
 	endStyled = 0;
 	lineStarts.push_back(0);
 	for (size_t pos = 0; pos < text.length(); pos++) {
-		if (text[pos] == '\n') {
+		if (text.at(pos) == '\n') {
 			lineStarts.push_back(pos + 1);
 		}
 	}
-	lineStarts.push_back(text.length());
-	lineStates.resize(lineStarts.size());
+	if (lineStarts.back() != Length()) {
+		lineStarts.push_back(Length());
+	}
+	lineStates.resize(lineStarts.size() + 1);
+	lineLevels.resize(lineStarts.size(), 0x400);
+}
+
+#if defined(_MSC_VER)
+// IDocument interface does not specify noexcept so best to not add it to implementation
+#pragma warning(disable: 26440)
+#endif
+
+Sci_Position TestDocument::MaxLine() const noexcept {
+	return lineStarts.size() - 1;
 }
 
 int SCI_METHOD TestDocument::Version() const {
@@ -89,15 +152,18 @@ void SCI_METHOD TestDocument::GetCharRange(char *buffer, Sci_Position position, 
 }
 
 char SCI_METHOD TestDocument::StyleAt(Sci_Position position) const {
+	if (position < 0) {
+		return 0;
+	}
 	return textStyles.at(position);
 }
 
 Sci_Position SCI_METHOD TestDocument::LineFromPosition(Sci_Position position) const {
-	if (position >= static_cast<Sci_Position>(text.length())) {
-		return lineStarts.size() - 1 - 1;
+	if (position >= Length()) {
+		return MaxLine();
 	}
 
-	std::vector<Sci_Position>::const_iterator it = std::lower_bound(lineStarts.begin(), lineStarts.end(), position);
+	const std::vector<Sci_Position>::const_iterator it = std::lower_bound(lineStarts.begin(), lineStarts.end(), position);
 	Sci_Position line = it - lineStarts.begin();
 	if (*it > position)
 		line--;
@@ -105,20 +171,24 @@ Sci_Position SCI_METHOD TestDocument::LineFromPosition(Sci_Position position) co
 }
 
 Sci_Position SCI_METHOD TestDocument::LineStart(Sci_Position line) const {
+	if (line < 0) {
+		return 0;
+	}
 	if (line >= static_cast<Sci_Position>(lineStarts.size())) {
-		return text.length();
+		return Length();
 	}
 	return lineStarts.at(line);
 }
 
-int SCI_METHOD TestDocument::GetLevel(Sci_Position) const {
-	// Only for folding so not implemented yet
-	return 0;
+int SCI_METHOD TestDocument::GetLevel(Sci_Position line) const {
+	return lineLevels.at(line);
 }
 
-int SCI_METHOD TestDocument::SetLevel(Sci_Position, int) {
-	// Only for folding so not implemented yet
-	return 0;
+int SCI_METHOD TestDocument::SetLevel(Sci_Position line, int level) {
+	if (line == static_cast<Sci_Position>(lineLevels.size())) {
+		return 0x400;
+	}
+	return lineLevels.at(line) = level;
 }
 
 int SCI_METHOD TestDocument::GetLineState(Sci_Position line) const {
@@ -135,15 +205,16 @@ void SCI_METHOD TestDocument::StartStyling(Sci_Position position) {
 
 bool SCI_METHOD TestDocument::SetStyleFor(Sci_Position length, char style) {
 	for (Sci_Position i = 0; i < length; i++) {
-		textStyles[endStyled] = style;
+		textStyles.at(endStyled) = style;
 		endStyled++;
 	}
 	return true;
 }
 
 bool SCI_METHOD TestDocument::SetStyles(Sci_Position length, const char *styles) {
+	assert(styles);
 	for (Sci_Position i = 0; i < length; i++) {
-		textStyles[endStyled] = styles[i];
+		textStyles.at(endStyled) = styles[i];
 		endStyled++;
 	}
 	return true;
@@ -181,6 +252,11 @@ int SCI_METHOD TestDocument::GetLineIndentation(Sci_Position) {
 }
 
 Sci_Position SCI_METHOD TestDocument::LineEnd(Sci_Position line) const {
+	const Sci_Position maxLine = MaxLine();
+	if (line == maxLine || line == maxLine+1) {
+		return text.length();
+	}
+	assert(line < maxLine);
 	Sci_Position position = LineStart(line + 1);
 	position--; // Back over CR or LF
 	// When line terminator is CR+LF, may need to go back one more
@@ -195,7 +271,7 @@ Sci_Position SCI_METHOD TestDocument::GetRelativePosition(Sci_Position positionS
 	if (characterOffset < 0) {
 		while (characterOffset < 0) {
 			if (pos <= 0) {
-				return 0;
+				return -1;
 			}
 			unsigned char previousByte = text.at(pos - 1);
 			if (previousByte < 0x80) {
@@ -226,18 +302,25 @@ Sci_Position SCI_METHOD TestDocument::GetRelativePosition(Sci_Position positionS
 
 int SCI_METHOD TestDocument::GetCharacterAndWidth(Sci_Position position, Sci_Position *pWidth) const {
 	// TODO: invalid UTF-8
-	if (position >= static_cast<Sci_Position>(text.length())) {
-		// Return NULs after document end
+	if ((position < 0) || (position >= Length())) {
+		// Return NULs before document start and after document end
 		if (pWidth) {
 			*pWidth = 1;
 		}
 		return '\0';
 	}
 	const unsigned char leadByte = text.at(position);
+	if (leadByte < 0x80) {
+		if (pWidth) {
+			*pWidth = 1;
+		}
+		return leadByte;
+	}
 	const int widthCharBytes = UTF8BytesOfLead[leadByte];
 	unsigned char charBytes[] = { leadByte,0,0,0 };
-	for (int b = 1; b < widthCharBytes; b++)
-		charBytes[b] = text[position + b];
+	for (int b = 1; b < widthCharBytes; b++) {
+		charBytes[b] = text.at(position + b);
+	}
 
 	if (pWidth) {
 		*pWidth = widthCharBytes;

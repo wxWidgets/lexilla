@@ -14,9 +14,12 @@
 #include <cassert>
 #include <cctype>
 #include <cstdio>
+
 #include <string>
+#include <string_view>
 #include <vector>
 #include <map>
+#include <functional>
 
 #include "ILexer.h"
 #include "Scintilla.h"
@@ -30,18 +33,15 @@
 #include "DefaultLexer.h"
 
 using namespace Scintilla;
+using namespace Lexilla;
 
 static const char *const RegistryWordListDesc[] = {
 	0
 };
 
 struct OptionsRegistry {
-	bool foldCompact;
-	bool fold;
-	OptionsRegistry() {
-		foldCompact = false;
-		fold = false;
-	}
+	bool foldCompact = false;
+	bool fold = false;
 };
 
 struct OptionSetRegistry : public OptionSet<OptionsRegistry> {

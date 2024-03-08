@@ -8,15 +8,26 @@
 #ifndef TESTDOCUMENT_H
 #define TESTDOCUMENT_H
 
+std::u32string UTF32FromUTF8(std::string_view svu8);
+
 class TestDocument : public Scintilla::IDocument {
 	std::string text;
 	std::string textStyles;
 	std::vector<Sci_Position> lineStarts;
 	std::vector<int> lineStates;
+	std::vector<int> lineLevels;
 	Sci_Position endStyled=0;
 public:
 	void Set(std::string_view sv);
+	TestDocument() = default;
+	// Deleted so TestDocument objects can not be copied.
+	TestDocument(const TestDocument&) = delete;
+	TestDocument(TestDocument&&) = delete;
+	TestDocument &operator=(const TestDocument&) = delete;
+	TestDocument &operator=(TestDocument&&) = delete;
 	virtual ~TestDocument() = default;
+
+	Sci_Position MaxLine() const noexcept;
 
 	int SCI_METHOD Version() const override;
 	void SCI_METHOD SetErrorStatus(int status) override;

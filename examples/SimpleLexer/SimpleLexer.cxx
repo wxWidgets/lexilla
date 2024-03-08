@@ -17,7 +17,7 @@
 // Linux/g++
 // g++ -fPIC -shared --std=c++17 -I ../../../scintilla/include -I ../../include -I ../../lexlib SimpleLexer.cxx ../../lexlib/*.cxx -o SimpleLexer.so
 
-/* It can be demonstrated in SciTE like this, substituting the actual shared library location as lexilla.path: 
+/* It can be demonstrated in SciTE like this, substituting the actual shared library location as lexilla.path:
 lexilla.path=.;C:\u\hg\lexilla\examples\SimpleLexer\SimpleLexer.dll
 lexer.*.xx=simple
 style.simple.1=fore:#FF0000
@@ -26,6 +26,8 @@ style.simple.1=fore:#FF0000
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+
+#include <string_view>
 
 #include "ILexer.h"
 #include "Scintilla.h"
@@ -42,6 +44,7 @@ style.simple.1=fore:#FF0000
 #include "LexerBase.h"
 
 using namespace Scintilla;
+using namespace Lexilla;
 
 class LexerSimple : public LexerBase {
 public:
@@ -76,7 +79,7 @@ public:
         }
 };
 
-#if _WIN32
+#if defined(_WIN32)
 #define EXPORT_FUNCTION __declspec(dllexport)
 #define CALLING_CONVENTION __stdcall
 #else
@@ -111,6 +114,10 @@ EXPORT_FUNCTION Scintilla::ILexer5* CALLING_CONVENTION CreateLexer(const char *n
 		return LexerSimple::LexerFactorySimple();
 	}
 	return nullptr;
+}
+
+EXPORT_FUNCTION const char * CALLING_CONVENTION GetNameSpace() {
+	return "example";
 }
 
 }

@@ -14,6 +14,9 @@
 #include <assert.h>
 #include <ctype.h>
 
+#include <string>
+#include <string_view>
+
 #include <algorithm>
 
 #include "ILexer.h"
@@ -27,7 +30,7 @@
 #include "CharacterSet.h"
 #include "LexerModule.h"
 
-using namespace Scintilla;
+using namespace Lexilla;
 
 static bool IsSpaceEquiv(int state) {
 	return (state == SCE_COFFEESCRIPT_DEFAULT
@@ -100,6 +103,13 @@ static bool followsKeyword(StyleContext &sc, Accessor &styler) {
 	styler.Flush();
 	return styler.StyleAt(pos) == SCE_COFFEESCRIPT_WORD;
 }
+
+#if defined(__clang__)
+#if __has_warning("-Wunused-but-set-variable")
+// Disable warning for visibleChars
+#pragma clang diagnostic ignored "-Wunused-but-set-variable"
+#endif
+#endif
 
 static void ColouriseCoffeeScriptDoc(Sci_PositionU startPos, Sci_Position length, int initStyle, WordList *keywordlists[],
                             Accessor &styler) {
@@ -357,6 +367,7 @@ static void FoldCoffeeScriptDoc(Sci_PositionU startPos, Sci_Position length, int
 	const Sci_Position docLines = styler.GetLine(styler.Length() - 1);  // Available last line
 
 	// property fold.coffeescript.comment
+	// Set to 1 to allow folding of comment blocks in CoffeeScript.
 	const bool foldComment = styler.GetPropertyInt("fold.coffeescript.comment") != 0;
 
 	const bool foldCompact = styler.GetPropertyInt("fold.compact") != 0;

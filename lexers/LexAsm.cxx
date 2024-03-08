@@ -17,8 +17,10 @@
 #include <ctype.h>
 
 #include <string>
+#include <string_view>
 #include <map>
 #include <set>
+#include <functional>
 
 #include "ILexer.h"
 #include "Scintilla.h"
@@ -33,6 +35,7 @@
 #include "DefaultLexer.h"
 
 using namespace Scintilla;
+using namespace Lexilla;
 
 static inline bool IsAWordChar(const int ch) {
 	return (ch < 0x80) && (isalnum(ch) || ch == '.' ||
@@ -262,11 +265,19 @@ void SCI_METHOD LexerAsm::Lex(Sci_PositionU startPos, Sci_Position length, int i
 	for (; sc.More(); sc.Forward())
 	{
 
-		// Prevent SCE_ASM_STRINGEOL from leaking back to previous line
-		if (sc.atLineStart && (sc.state == SCE_ASM_STRING)) {
-			sc.SetState(SCE_ASM_STRING);
-		} else if (sc.atLineStart && (sc.state == SCE_ASM_CHARACTER)) {
-			sc.SetState(SCE_ASM_CHARACTER);
+		if (sc.atLineStart) {
+			switch (sc.state) {
+			case SCE_ASM_STRING:
+			case SCE_ASM_CHARACTER:
+				// Prevent SCE_ASM_STRINGEOL from leaking back to previous line
+				sc.SetState(sc.state);
+				break;
+			case SCE_ASM_COMMENT:
+				sc.SetState(SCE_ASM_DEFAULT);
+				break;
+			default:
+				break;
+			}
 		}
 
 		// Handle line continuation generically.
@@ -323,13 +334,9 @@ void SCI_METHOD LexerAsm::Lex(Sci_PositionU startPos, Sci_Position length, int i
 		} else if (sc.state == SCE_ASM_COMMENTDIRECTIVE) {
 			char delimiter = options.delimiter.empty() ? '~' : options.delimiter.c_str()[0];
 			if (sc.ch == delimiter) {
-				while (!sc.atLineEnd) {
+				while (!sc.MatchLineEnd()) {
 					sc.Forward();
 				}
-				sc.SetState(SCE_ASM_DEFAULT);
-			}
-		} else if (sc.state == SCE_ASM_COMMENT ) {
-			if (sc.atLineEnd) {
 				sc.SetState(SCE_ASM_DEFAULT);
 			}
 		} else if (sc.state == SCE_ASM_STRING) {

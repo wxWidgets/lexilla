@@ -3,7 +3,7 @@
 # Copyright 2019 by Neil Hodgson <neilh@scintilla.org>
 # The License.txt file describes the conditions under which this software may be distributed.
 # Should be run using mingw32-make on Windows, not nmake
-# On Windows g++ is used, on OS X clang, and on Linux g++ is used by default
+# On Windows g++ is used, on macOS clang, and on Linux g++ is used by default
 # but clang can be used by defining CLANG when invoking make
 # clang works only with libc++, not libstdc++
 
@@ -44,7 +44,7 @@ endif
 vpath %.cxx ../access
 
 DEFINES += -D$(if $(DEBUG),DEBUG,NDEBUG)
-BASE_FLAGS += $(if $(DEBUG),-g,-Os)
+BASE_FLAGS += $(if $(DEBUG),-g,-O3)
 
 INCLUDES = -I ../../scintilla/include -I ../include -I ../access
 BASE_FLAGS += $(WARNINGS)
