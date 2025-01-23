@@ -190,10 +190,13 @@ static void handleNumeric(StyleContext& sc)
     }
     else
         radix = 10;
-    if (sc.chNext != '.' || !isDigitOfRadix(sc.GetRelative(2), radix))
-        return;
-    sc.Forward();
-    skipInt(sc, radix);
+    if (sc.chNext == '.') {
+        if (!isDigitOfRadix(sc.GetRelative(2), radix))
+            return;
+        sc.Forward();
+        skipInt(sc, radix);
+    }
+    
     if (sc.chNext == 's') {
         // ScaledDecimal
         sc.Forward();
@@ -323,4 +326,4 @@ static const char* const smalltalkWordListDesc[] = {
     0
 };
 
-LexerModule lmSmalltalk(SCLEX_SMALLTALK, colorizeSmalltalkDoc, "smalltalk", NULL, smalltalkWordListDesc);
+extern const LexerModule lmSmalltalk(SCLEX_SMALLTALK, colorizeSmalltalkDoc, "smalltalk", NULL, smalltalkWordListDesc);

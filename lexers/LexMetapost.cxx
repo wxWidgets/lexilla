@@ -400,4 +400,4 @@ static void FoldMetapostDoc(Sci_PositionU startPos, Sci_Position length, int, Wo
 }
 
 
-LexerModule lmMETAPOST(SCLEX_METAPOST, ColouriseMETAPOSTDoc, "metapost", FoldMetapostDoc, metapostWordListDesc);
+extern const LexerModule lmMETAPOST(SCLEX_METAPOST, ColouriseMETAPOSTDoc, "metapost", FoldMetapostDoc, metapostWordListDesc);

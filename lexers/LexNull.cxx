@@ -37,4 +37,4 @@ static void ColouriseNullDoc(Sci_PositionU startPos, Sci_Position length, int, W
 	}
 }
 
-LexerModule lmNull(SCLEX_NULL, ColouriseNullDoc, "null");
+extern const LexerModule lmNull(SCLEX_NULL, ColouriseNullDoc, "null");

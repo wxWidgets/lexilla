@@ -622,7 +622,7 @@ static const char * const erlangWordListDesc[] = {
 	0
 };
 
-LexerModule lmErlang(
+extern const LexerModule lmErlang(
 	SCLEX_ERLANG,
 	ColouriseErlangDoc,
 	"erlang",

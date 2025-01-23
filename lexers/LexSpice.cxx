@@ -45,7 +45,7 @@ static const char * const spiceWordListDesc[] = {
     0
 };
 
-LexerModule lmSpice(SCLEX_SPICE, ColouriseDocument, "spice", NULL, spiceWordListDesc);
+extern const LexerModule lmSpice(SCLEX_SPICE, ColouriseDocument, "spice", NULL, spiceWordListDesc);
 
 /*
  * Implementation

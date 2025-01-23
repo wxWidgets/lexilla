@@ -273,4 +273,4 @@ static const char * const ESCRIPTWordLists[] = {
 	0,
 };
 
-LexerModule lmESCRIPT(SCLEX_ESCRIPT, ColouriseESCRIPTDoc, "escript", FoldESCRIPTDoc, ESCRIPTWordLists);
+extern const LexerModule lmESCRIPT(SCLEX_ESCRIPT, ColouriseESCRIPTDoc, "escript", FoldESCRIPTDoc, ESCRIPTWordLists);

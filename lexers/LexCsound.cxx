@@ -211,4 +211,4 @@ static const char * const csoundWordListDesc[] = {
 	0
 };
 
-LexerModule lmCsound(SCLEX_CSOUND, ColouriseCsoundDoc, "csound", FoldCsoundInstruments, csoundWordListDesc);
+extern const LexerModule lmCsound(SCLEX_CSOUND, ColouriseCsoundDoc, "csound", FoldCsoundInstruments, csoundWordListDesc);

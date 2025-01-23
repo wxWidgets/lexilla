@@ -430,5 +430,5 @@ static const char * const nimrodWordListDesc[] = {
 	0
 };
 
-LexerModule lmNimrod(SCLEX_NIMROD, ColouriseNimrodDoc, "nimrod", FoldNimrodDoc,
+extern const LexerModule lmNimrod(SCLEX_NIMROD, ColouriseNimrodDoc, "nimrod", FoldNimrodDoc,
 				     nimrodWordListDesc);

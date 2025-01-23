@@ -258,7 +258,7 @@ static const char * const GAPWordListDesc[] = {
 	0
 };
 
-LexerModule lmGAP(
+extern const LexerModule lmGAP(
    SCLEX_GAP,
    ColouriseGAPDoc,
    "gap",

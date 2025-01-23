@@ -512,7 +512,7 @@ static const char * const EclWordListDesc[] = {
 	0
 };
 
-LexerModule lmECL(
+extern const LexerModule lmECL(
    SCLEX_ECL,
    ColouriseEclDoc,
    "ecl",

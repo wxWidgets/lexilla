@@ -363,4 +363,4 @@ void FoldYAMLDoc(Sci_PositionU startPos, Sci_Position length, int /*initStyle - 
 
 }
 
-LexerModule lmYAML(SCLEX_YAML, ColouriseYAMLDoc, "yaml", FoldYAMLDoc, yamlWordListDesc);
+extern const LexerModule lmYAML(SCLEX_YAML, ColouriseYAMLDoc, "yaml", FoldYAMLDoc, yamlWordListDesc);

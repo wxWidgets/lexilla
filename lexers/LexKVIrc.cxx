@@ -469,5 +469,5 @@ static const char *const kvircWordListDesc[] = {
 
 
 /* Registering functions and wordlists */
-LexerModule lmKVIrc(SCLEX_KVIRC, ColouriseKVIrcDoc, "kvirc", FoldKVIrcDoc,
+extern const LexerModule lmKVIrc(SCLEX_KVIRC, ColouriseKVIrcDoc, "kvirc", FoldKVIrcDoc,
                     kvircWordListDesc);

@@ -1082,4 +1082,4 @@ static const char * const verilogWordLists[] = {
             0,
         };
 
-LexerModule lmVerilog(SCLEX_VERILOG, LexerVerilog::LexerFactoryVerilog, "verilog", verilogWordLists);
+extern const LexerModule lmVerilog(SCLEX_VERILOG, LexerVerilog::LexerFactoryVerilog, "verilog", verilogWordLists);

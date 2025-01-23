@@ -271,4 +271,4 @@ static const char * const asyWordLists[] = {
             0,
         };
 
-LexerModule lmASY(SCLEX_ASYMPTOTE, ColouriseAsyDoc, "asy", FoldAsyDoc, asyWordLists);
+extern const LexerModule lmASY(SCLEX_ASYMPTOTE, ColouriseAsyDoc, "asy", FoldAsyDoc, asyWordLists);

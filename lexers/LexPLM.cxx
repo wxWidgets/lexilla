@@ -199,4 +199,4 @@ static const char *const plmWordListDesc[] = {
 	0
 };
 
-LexerModule lmPLM(SCLEX_PLM, ColourisePlmDoc, "PL/M", FoldPlmDoc, plmWordListDesc);
+extern const LexerModule lmPLM(SCLEX_PLM, ColourisePlmDoc, "PL/M", FoldPlmDoc, plmWordListDesc);
