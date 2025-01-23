@@ -22,6 +22,7 @@
 #include "Scintilla.h"
 #include "SciLexer.h"
 #include "LexillaCompat.h"
+
 #include "InList.h"
 #include "WordList.h"
 #include "LexAccessor.h"
@@ -87,7 +88,7 @@ std::string GetNextWord(Accessor &styler, Sci_PositionU start) {
 	return ret;
 }
 
-bool Contains(const std::string &s, std::string_view search) noexcept {
+bool Contains(const std::string &s, const std::string& search) noexcept {
 	return s.find(search) != std::string::npos;
 }
 
@@ -139,7 +140,7 @@ script_type ScriptOfState(int state) noexcept {
 	}
 }
 
-constexpr int statePrintForState(int state, script_mode inScriptType) noexcept {
+int statePrintForState(int state, script_mode inScriptType) noexcept {
 	int StateToPrint = state;
 
 	if (state >= SCE_HJ_START) {
@@ -155,7 +156,7 @@ constexpr int statePrintForState(int state, script_mode inScriptType) noexcept {
 	return StateToPrint;
 }
 
-constexpr int stateForPrintState(int StateToPrint) noexcept {
+int stateForPrintState(int StateToPrint) noexcept {
 	int state = StateToPrint;
 
 	if ((StateToPrint >= SCE_HPA_START) && (StateToPrint <= SCE_HPA_IDENTIFIER)) {
@@ -173,7 +174,7 @@ constexpr bool IsNumberChar(char ch) noexcept {
 	return IsADigit(ch) || ch == '.' || ch == '-' || ch == '#';
 }
 
-constexpr bool isStringState(int state) noexcept {
+bool isStringState(int state) noexcept {
 	bool bResult = false;
 
 	switch (state) {
@@ -207,7 +208,7 @@ constexpr bool isStringState(int state) noexcept {
 	return bResult;
 }
 
-constexpr bool stateAllowsTermination(int state) noexcept {
+bool stateAllowsTermination(int state) noexcept {
 	bool allowTermination = !isStringState(state);
 	if (allowTermination) {
 		switch (state) {
@@ -235,7 +236,7 @@ bool isPreProcessorEndTag(int state, int ch) noexcept {
 }
 
 // not really well done, since it's only comments that should lex the %> and <%
-constexpr bool isCommentASPState(int state) noexcept {
+bool isCommentASPState(int state) noexcept {
 	bool bResult = false;
 
 	switch (state) {
@@ -463,7 +464,7 @@ bool isWordCdata(Sci_PositionU start, Sci_PositionU end, const Accessor &styler)
 }
 
 // Return the first state to reach when entering a scripting language
-constexpr int StateForScript(script_type scriptLanguage) noexcept {
+int StateForScript(script_type scriptLanguage) noexcept {
 	int Result = SCE_HJ_START;
 	switch (scriptLanguage) {
 	case eScriptVBS:
@@ -507,7 +508,7 @@ constexpr bool IsPhpWordChar(int ch) noexcept {
 	return IsADigit(ch) || IsPhpWordStart(ch);
 }
 
-constexpr bool InTagState(int state) noexcept {
+bool InTagState(int state) noexcept {
 	return AnyOf(state, SCE_H_TAG, SCE_H_TAGUNKNOWN, SCE_H_SCRIPT,
 	       SCE_H_ATTRIBUTE, SCE_H_ATTRIBUTEUNKNOWN,
 	       SCE_H_NUMBER, SCE_H_OTHER,
@@ -672,7 +673,7 @@ constexpr bool isPHPStringState(int state) noexcept {
 	    (state == SCE_HPHP_COMPLEX_VARIABLE);
 }
 
-constexpr bool StyleNeedsBacktrack(int state) noexcept {
+bool StyleNeedsBacktrack(int state) noexcept {
 	return InTagState(state) || isPHPStringState(state);
 }
 
@@ -691,8 +692,8 @@ enum class InstructionTag {
 };
 
 InstructionTag segIsScriptInstruction(AllowPHP allowPHP, int state, const Accessor &styler, Sci_PositionU start, bool isXml) {
-	constexpr std::string_view phpTag = "php";
-	constexpr std::string_view xmlTag = "xml";
+	const std::string phpTag = "php";
+	const std::string xmlTag = "xml";
 	const std::string tag = styler.GetRangeLowered(start, start + phpTag.length());
 	if (allowPHP != AllowPHP::None) {
 		// Require <?php or <?=

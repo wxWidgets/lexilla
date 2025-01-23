@@ -34,7 +34,7 @@ inline bool IsAWordStart(int ch) noexcept {
 	return (ch < 0x80) && (isalnum(ch) || ch == '_');
 }
 
-inline bool IsAnOperator(int ch) noexcept {
+bool IsAnOperator(int ch) noexcept {
 	// '.' left out as it is used to make up numbers
 	if (ch == '-' || ch == '+' || ch == '!' || ch == '~' ||
 	        ch == '?' || ch == ':' || ch == '*' || ch == '/' ||

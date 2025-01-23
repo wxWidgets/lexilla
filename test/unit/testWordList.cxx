@@ -11,7 +11,7 @@
 #include <map>
 
 #include "WordList.h"
-#include "CharacterSet.h"
+#include "LexCharacterSet.h"
 #include "SubStyles.h"
 
 #include "catch.hpp"

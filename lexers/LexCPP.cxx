@@ -87,11 +87,11 @@ bool followsReturnKeyword(const StyleContext &sc, LexAccessor &styler) {
 	return !*s;
 }
 
-inline bool IsOperatorOrSpace(int ch) noexcept {
+bool IsOperatorOrSpace(int ch) noexcept {
 	return isoperator(ch) || IsASpace(ch);
 }
 
-bool OnlySpaceOrTab(std::string_view s) noexcept {
+bool OnlySpaceOrTab(std::string const& s) noexcept {
 	for (const char ch : s) {
 		if (!IsASpaceOrTab(ch))
 			return false;
@@ -232,7 +232,7 @@ struct PPDefinition {
 	std::string value;
 	bool isUndef;
 	std::string arguments;
-	PPDefinition(Sci_Position line_, std::string_view key_, std::string_view value_, bool isUndef_, std::string_view arguments_) :
+	PPDefinition(Sci_Position line_, std::string const& key_, std::string const& value_, bool isUndef_, std::string const& arguments_) :
 		line(line_), key(key_), value(value_), isUndef(isUndef_), arguments(arguments_) {
 	}
 };
@@ -333,14 +333,15 @@ struct InterpolatingState {
 };
 
 struct Definition {
-	std::string_view name;
-	std::string_view value;
-	std::string_view arguments;
+	std::string name;
+	std::string value;
+	std::string arguments;
 };
 
-constexpr std::string_view TrimSpaceTab(std::string_view sv) noexcept {
+std::string TrimSpaceTab(std::string const& _sv) noexcept {
+	std::string sv = _sv;
 	while (!sv.empty() && IsASpaceOrTab(sv.front())) {
-		sv.remove_prefix(1);
+		sv = sv.substr(1);
 	}
 	return sv;
 }
@@ -354,21 +355,21 @@ constexpr std::string_view TrimSpaceTab(std::string_view sv) noexcept {
 // Whitespace separates macro and value in files but keywords use '=' separator.
 // 'endName' contains a set of characters that terminate the name of the macro.
 
-constexpr Definition ParseDefine(std::string_view definition, std::string_view endName) {
+Definition ParseDefine(std::string const& _definition, std::string const& endName) {
 	Definition ret;
-	definition = TrimSpaceTab(definition);
+	std::string definition = TrimSpaceTab(_definition);
 	const size_t afterName = definition.find_first_of(endName);
-	if (afterName != std::string_view::npos) {
+	if (afterName != std::string::npos) {
 		ret.name = definition.substr(0, afterName);
 		if (definition.at(afterName) == '(') {
 			// Macro
-			definition.remove_prefix(afterName+1);
+			definition = definition.substr(afterName+1);
 			const size_t closeBracket = definition.find(')');
-			if (closeBracket != std::string_view::npos) {
+			if (closeBracket != std::string::npos) {
 				ret.arguments = definition.substr(0, closeBracket);
-				definition.remove_prefix(closeBracket+1);
-				if (!definition.empty() && (endName.find(definition.front()) != std::string_view::npos)) {
-					definition.remove_prefix(1);
+				definition = definition.substr(closeBracket+1);
+				if (!definition.empty() && (endName.find(definition.front()) != std::string::npos)) {
+					definition = definition.substr(1);
 				}
 				ret.value = definition;
 			} // else malformed as requires closing bracket
@@ -553,7 +554,7 @@ class LexerCPP : public ILexer5 {
 	struct SymbolValue {
 		std::string value;
 		std::string arguments;
-		SymbolValue() noexcept = default;
+		SymbolValue() = default;
 		SymbolValue(const std::string &value_, const std::string &arguments_) : value(value_), arguments(arguments_) {
 		}
 		SymbolValue &operator = (const std::string &value_) {

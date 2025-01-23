@@ -104,7 +104,7 @@ bool NameContainsDot(std::string const& path) noexcept {
 	return false;
 }
 
-inline bool HasPrefix(std::string const& s, std::string const& prefix) noexcept {
+bool HasPrefix(std::string const& s, std::string const& prefix) noexcept {
 	return (s.size() >= prefix.size()) && (prefix == s.substr(0, prefix.size()));
 }
 

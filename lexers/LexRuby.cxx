@@ -218,7 +218,7 @@ bool lookingAtHereDocDelim(Accessor &styler, Sci_Position pos, Sci_Position leng
 }
 
 //XXX Identical to Perl, put in common area
-inline char opposite(char ch) noexcept {
+char opposite(char ch) noexcept {
     if (ch == '(')
         return ')';
     if (ch == '[')

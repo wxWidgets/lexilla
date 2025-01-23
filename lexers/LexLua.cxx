@@ -18,6 +18,7 @@
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
+#include "LexillaCompat.h"
 
 #include "WordList.h"
 #include "LexAccessor.h"
@@ -123,7 +124,7 @@ public:
 	void SCI_METHOD Release() noexcept override {
 		delete this;
 	}
-	[[nodiscard]] int SCI_METHOD Version() const noexcept override {
+	wxNODISCARD int SCI_METHOD Version() const noexcept override {
 		return lvRelease5;
 	}
 	const char *SCI_METHOD PropertyNames() noexcept override {

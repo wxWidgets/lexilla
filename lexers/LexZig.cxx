@@ -10,7 +10,6 @@
 #include <cstring>
 
 #include <string>
-#include <string_view>
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -18,12 +17,13 @@
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
+#include "LexillaCompat.h"
 
 #include "WordList.h"
 #include "LexAccessor.h"
 #include "Accessor.h"
 #include "StyleContext.h"
-#include "CharacterSet.h"
+#include "LexCharacterSet.h"
 #include "LexerModule.h"
 #include "OptionSet.h"
 #include "DefaultLexer.h"
@@ -174,7 +174,7 @@ class LexerZig : public DefaultLexer {
 	OptionSetZig osZig;
 public:
 	LexerZig(const char *languageName_, int language_) :
-		DefaultLexer(languageName_, language_, lexicalClasses, std::size(lexicalClasses)) {
+		DefaultLexer(languageName_, language_, lexicalClasses, Sci::size(lexicalClasses)) {
 	}
 	// Deleted so LexerZig objects can not be copied.
 	LexerZig(const LexerZig &) = delete;

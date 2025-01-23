@@ -15,6 +15,7 @@
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
+#include "LexillaCompat.h"
 
 #include "WordList.h"
 #include "LexAccessor.h"
@@ -110,7 +111,7 @@ class LexerVB : public DefaultLexer {
 	OptionSetVB osVB;
 public:
 	LexerVB(const char *languageName_, int language_, bool vbScriptSyntax_) :
-		DefaultLexer(languageName_, language_, lexicalClasses, std::size(lexicalClasses)),
+		DefaultLexer(languageName_, language_, lexicalClasses, Sci::size(lexicalClasses)),
 		vbScriptSyntax(vbScriptSyntax_) {
 	}
 	// Deleted so LexerVB objects can not be copied.

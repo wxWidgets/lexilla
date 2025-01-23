@@ -15,7 +15,7 @@
 #include <memory>
 
 #include "WordList.h"
-#include "CharacterSet.h"
+#include "LexCharacterSet.h"
 
 #include "LexillaCompat.h"
 

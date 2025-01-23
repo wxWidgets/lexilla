@@ -163,7 +163,7 @@ public:
 				break;
 		}
 	}
-	inline bool AtEnd() noexcept {
+	bool AtEnd() noexcept {
 		return invalid || type == Notation::none || (type != Notation::none && toEnd < 0);
 	}
 };

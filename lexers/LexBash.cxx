@@ -94,7 +94,7 @@ constexpr int MaskCommand(int state) noexcept {
 	return state & ~commandSubstitutionFlag;
 }
 
-inline int translateBashDigit(int ch) noexcept {
+int translateBashDigit(int ch) noexcept {
 	if (ch >= '0' && ch <= '9') {
 		return ch - '0';
 	} else if (ch >= 'a' && ch <= 'z') {
@@ -122,7 +122,7 @@ int getBashNumberBase(char *s) noexcept {
 	return base;
 }
 
-inline int opposite(int ch) noexcept {
+int opposite(int ch) noexcept {
 	if (ch == '(') return ')';
 	if (ch == '[') return ']';
 	if (ch == '{') return '}';
@@ -170,7 +170,7 @@ bool IsCommentLine(Sci_Position line, LexAccessor &styler) {
 	return false;
 }
 
-inline bool StyleForceBacktrack(int state) noexcept {
+bool StyleForceBacktrack(int state) noexcept {
 	return AnyOf(state, SCE_SH_CHARACTER, SCE_SH_STRING, SCE_SH_BACKTICKS, SCE_SH_HERE_Q, SCE_SH_PARAM);
 }
 

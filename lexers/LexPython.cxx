@@ -18,6 +18,7 @@
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
+#include "LexillaCompat.h"
 
 #include "WordList.h"
 #include "LexAccessor.h"
@@ -76,11 +77,11 @@ constexpr bool IsPyStringTypeChar(int ch, literalsAllowed allowed) noexcept {
 		((allowed & litF) && (ch == 'f' || ch == 'F'));
 }
 
-inline bool IsQuote(int ch) {
+bool IsQuote(int ch) {
 	return AnyOf(ch, '"', '\'');
 }
 
-inline bool IsRawPrefix(int ch) {
+bool IsRawPrefix(int ch) {
 	return AnyOf(ch, 'r', 'R');
 }
 
@@ -106,15 +107,15 @@ bool IsPyStringStart(int ch, int chNext, int chNext2, literalsAllowed allowed) n
 	return false;
 }
 
-inline bool IsPyFStringState(int st) noexcept {
+bool IsPyFStringState(int st) noexcept {
 	return AnyOf(st, SCE_P_FCHARACTER, SCE_P_FSTRING, SCE_P_FTRIPLE, SCE_P_FTRIPLEDOUBLE);
 }
 
-inline bool IsPySingleQuoteStringState(int st) noexcept {
+bool IsPySingleQuoteStringState(int st) noexcept {
 	return AnyOf(st, SCE_P_CHARACTER, SCE_P_STRING, SCE_P_FCHARACTER, SCE_P_FSTRING);
 }
 
-inline bool IsPyTripleQuoteStringState(int st) noexcept {
+bool IsPyTripleQuoteStringState(int st) noexcept {
 	return AnyOf(st, SCE_P_TRIPLE, SCE_P_TRIPLEDOUBLE, SCE_P_FTRIPLE, SCE_P_FTRIPLEDOUBLE);
 }
 

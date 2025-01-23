@@ -58,7 +58,7 @@ constexpr bool IsBSeparator(char ch) noexcept {
 }
 
 // Tests for escape character
-constexpr bool IsEscaped(const char* wordStr, Sci_PositionU pos) noexcept {
+bool IsEscaped(const char* wordStr, Sci_PositionU pos) noexcept {
 	bool isQoted=false;
 	while (pos>0){
 		pos--;
@@ -70,10 +70,10 @@ constexpr bool IsEscaped(const char* wordStr, Sci_PositionU pos) noexcept {
 	return isQoted;
 }
 
-constexpr bool IsQuotedBy(std::string_view svBuffer, char quote) noexcept {
+bool IsQuotedBy(std::string const& svBuffer, char quote) noexcept {
 	bool CurrentStatus = false;
 	size_t pQuote = svBuffer.find(quote);
-	while (pQuote != std::string_view::npos) {
+	while (pQuote != std::string::npos) {
 		if (!IsEscaped(svBuffer.data(), pQuote)) {
 			CurrentStatus = !CurrentStatus;
 		}
@@ -83,8 +83,8 @@ constexpr bool IsQuotedBy(std::string_view svBuffer, char quote) noexcept {
 }
 
 // Tests for quote character
-constexpr bool textQuoted(const char *lineBuffer, Sci_PositionU endPos) noexcept {
-	const std::string_view svBuffer(lineBuffer, endPos);
+bool textQuoted(const char *lineBuffer, Sci_PositionU endPos) noexcept {
+	const std::string svBuffer(lineBuffer, endPos);
 	return IsQuotedBy(svBuffer, '\"') || IsQuotedBy(svBuffer, '\'');
 }
 
