@@ -53,6 +53,8 @@ bool StyleContext::MatchIgnoreCase(const char *s) {
 	if (MakeLowerCase(ch) != static_cast<unsigned char>(*s))
 		return false;
 	s++;
+	if (!*s)
+		return true;
 	if (MakeLowerCase(chNext) != static_cast<unsigned char>(*s))
 		return false;
 	s++;
