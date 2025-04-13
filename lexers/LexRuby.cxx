@@ -160,7 +160,7 @@ class LexerRuby : public DefaultLexer {
 	SubStyles subStyles{styleSubable};
 public:
 	LexerRuby() :
-		DefaultLexer("ruby", SCLEX_RUBY, lexicalClasses, std::size(lexicalClasses)) {
+		DefaultLexer("ruby", SCLEX_RUBY, lexicalClasses, Sci::size(lexicalClasses)) {
 	}
 	// Deleted so LexerRuby objects can not be copied.
 	LexerRuby(const LexerRuby &) = delete;
@@ -827,7 +827,8 @@ bool sureThisIsNotHeredoc(Sci_Position lt2StartPos, Accessor &styler) {
 
 void synchronizeDocStart(Sci_PositionU &startPos, Sci_Position &length, int &initStyle, Accessor &styler, bool skipWhiteSpace=false) {
     // Retreat one line to match function lexer
-    if (const Sci_Position lineCurrent = styler.GetLine(startPos); lineCurrent > 0) {
+    const Sci_Position lineCurrent = styler.GetLine(startPos);
+    if (lineCurrent > 0) {
         const Sci_Position endPos = startPos + length;
         startPos = styler.LineStart(lineCurrent - 1);
         length = endPos - startPos;
@@ -964,10 +965,10 @@ void LexerRuby::Lex(Sci_PositionU startPos, Sci_Position length, int initStyle, 
     public:
         int brace_counts = 0;   // Number of #{ ... } things within an expression
 
-        [[nodiscard]] bool canEnter() const noexcept {
+        wxNODISCARD bool canEnter() const noexcept {
             return inner_string_count < INNER_STRINGS_MAX_COUNT;
         }
-        [[nodiscard]] bool canExit() const noexcept {
+        wxNODISCARD bool canExit() const noexcept {
             return inner_string_count > 0;
         }
         void enter(int &state, const QuoteCls &curr_quote) noexcept {
