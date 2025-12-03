@@ -70,7 +70,7 @@ class LexerMakeFile : public DefaultLexer {
 	OptionSetMake osMake;
 public:
 	LexerMakeFile() :
-		DefaultLexer("makefile", SCLEX_MAKEFILE, lexicalClasses, std::size(lexicalClasses)) {
+		DefaultLexer("makefile", SCLEX_MAKEFILE, lexicalClasses, Sci::size(lexicalClasses)) {
 	}
 
 	const char *SCI_METHOD PropertyNames() override {
@@ -91,7 +91,7 @@ public:
 	}
 	Sci_Position SCI_METHOD WordListSet(int n, const char *wl) override;
 
-	void ColouriseMakeLine(std::string_view lineBuffer,
+	void ColouriseMakeLine(std::string const& lineBuffer,
 		Sci_PositionU startLine, Sci_PositionU endPos, Accessor &styler);
 
 	void SCI_METHOD Lex(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument *pAccess) override;
@@ -125,7 +125,7 @@ Sci_Position SCI_METHOD LexerMakeFile::WordListSet(int n, const char *wl) {
 }
 
 void LexerMakeFile::ColouriseMakeLine(
-	const std::string_view lineBuffer,
+	std::string const& lineBuffer,
 	Sci_PositionU startLine,
 	Sci_PositionU endPos,
 	Accessor &styler) {
@@ -154,7 +154,7 @@ void LexerMakeFile::ColouriseMakeLine(
 		}
 		if (IsUpperOrLowerCase(lineBuffer[i]) &&
 			(lineBuffer.find_first_of(":=") == std::string::npos)) {
-			const std::string_view firstWord(lineBuffer.substr(i));
+			const std::string firstWord(lineBuffer.substr(i));
 			size_t endWord = 0;
 			while ((endWord < firstWord.length()) && IsUpperOrLowerCase(firstWord[endWord])) {
 				endWord++;

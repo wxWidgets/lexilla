@@ -165,7 +165,7 @@ class LexerRust : public DefaultLexer {
 	OptionsRust options;
 	OptionSetRust osRust;
 public:
-	LexerRust() : DefaultLexer("rust", SCLEX_RUST, lexicalClasses, std::size(lexicalClasses)) {
+	LexerRust() : DefaultLexer("rust", SCLEX_RUST, lexicalClasses, Sci::size(lexicalClasses)) {
 	}
 	virtual ~LexerRust() {
 	}

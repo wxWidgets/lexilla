@@ -71,7 +71,7 @@ struct OptionsAsm {
 	bool foldExplicitAnywhere = false;
 	bool foldCompact = true;
 	std::string commentChar;
-	[[nodiscard]] char Delimiter() const noexcept {
+	wxNODISCARD char Delimiter() const noexcept {
 		return delimiter.empty() ? '~' : delimiter[0];
 	}
 };
