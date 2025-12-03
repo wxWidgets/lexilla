@@ -138,3 +138,6 @@ int SCI_METHOD DefaultLexer::GetIdentifier() {
 	return language;
 }
 
+const char *SCI_METHOD DefaultLexer::PropertyGet(const char * /* key */) {
+	return nullptr;
+}

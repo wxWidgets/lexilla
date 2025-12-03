@@ -41,6 +41,7 @@ $(DIR_O)/LexAccessor.o: \
 	../lexlib/LexAccessor.cxx \
 	../../scintilla/include/ILexer.h \
 	../../scintilla/include/Sci_Position.h \
+	../../scintilla/include/Scintilla.h \
 	../lexlib/LexAccessor.h \
 	../lexlib/LexCharacterSet.h
 $(DIR_O)/LexerBase.o: \
@@ -95,7 +96,7 @@ $(DIR_O)/StyleContext.o: \
 $(DIR_O)/WordList.o: \
 	../lexlib/WordList.cxx \
 	../lexlib/WordList.h \
-	../lexlib/CharacterSet.h
+	../lexlib/LexCharacterSet.h
 $(DIR_O)/LexA68k.o: \
 	../lexers/LexA68k.cxx \
 	../../scintilla/include/ILexer.h \
@@ -471,7 +472,7 @@ $(DIR_O)/LexDart.o: \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
 	../lexlib/StyleContext.h \
-	../lexlib/CharacterSet.h \
+	../lexlib/LexCharacterSet.h \
 	../lexlib/LexerModule.h \
 	../lexlib/OptionSet.h \
 	../lexlib/DefaultLexer.h
@@ -897,7 +898,9 @@ $(DIR_O)/LexMake.o: \
 	../lexlib/Accessor.h \
 	../lexlib/StyleContext.h \
 	../lexlib/LexCharacterSet.h \
-	../lexlib/LexerModule.h
+	../lexlib/LexerModule.h \
+	../lexlib/OptionSet.h \
+	../lexlib/DefaultLexer.h
 $(DIR_O)/LexMarkdown.o: \
 	../lexers/LexMarkdown.cxx \
 	../../scintilla/include/ILexer.h \
@@ -1044,7 +1047,7 @@ $(DIR_O)/LexNix.o: \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
 	../lexlib/StyleContext.h \
-	../lexlib/CharacterSet.h \
+	../lexlib/LexCharacterSet.h \
 	../lexlib/LexerModule.h \
 	../lexlib/OptionSet.h \
 	../lexlib/DefaultLexer.h
@@ -1353,6 +1356,16 @@ $(DIR_O)/LexScriptol.o: \
 	../lexlib/StyleContext.h \
 	../lexlib/LexCharacterSet.h \
 	../lexlib/LexerModule.h
+$(DIR_O)/LexSINEX.o: \
+	../lexers/LexSINEX.cxx \
+	../../scintilla/include/ILexer.h \
+	../../scintilla/include/Sci_Position.h \
+	../../scintilla/include/Scintilla.h \
+	../include/SciLexer.h \
+	../lexlib/LexAccessor.h \
+	../lexlib/Accessor.h \
+	../lexlib/LexCharacterSet.h \
+	../lexlib/LexerModule.h
 $(DIR_O)/LexSmalltalk.o: \
 	../lexers/LexSmalltalk.cxx \
 	../../scintilla/include/ILexer.h \
@@ -1534,7 +1547,7 @@ $(DIR_O)/LexTOML.o: \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
 	../lexlib/StyleContext.h \
-	../lexlib/CharacterSet.h \
+	../lexlib/LexCharacterSet.h \
 	../lexlib/LexerModule.h
 $(DIR_O)/LexTroff.o: \
 	../lexers/LexTroff.cxx \
@@ -1546,7 +1559,7 @@ $(DIR_O)/LexTroff.o: \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
 	../lexlib/StyleContext.h \
-	../lexlib/CharacterSet.h \
+	../lexlib/LexCharacterSet.h \
 	../lexlib/LexerModule.h
 $(DIR_O)/LexTxt2tags.o: \
 	../lexers/LexTxt2tags.cxx \
@@ -1646,7 +1659,7 @@ $(DIR_O)/LexZig.o: \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
 	../lexlib/StyleContext.h \
-	../lexlib/CharacterSet.h \
+	../lexlib/LexCharacterSet.h \
 	../lexlib/LexerModule.h \
 	../lexlib/OptionSet.h \
 	../lexlib/DefaultLexer.h

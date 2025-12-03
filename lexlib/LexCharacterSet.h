@@ -201,6 +201,10 @@ int CompareCaseInsensitive(const char *a, const char *b) noexcept;
 bool EqualCaseInsensitive(std::string const& a, std::string const& b) noexcept;
 int CompareNCaseInsensitive(const char *a, const char *b, size_t len) noexcept;
 
+constexpr bool StartsWith(std::string_view s, char start) noexcept {
+	return !s.empty() && (s.front() == start);
+}
+
 }
 
 #endif
