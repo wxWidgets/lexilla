@@ -633,6 +633,8 @@ void SCI_METHOD LexerVisualProlog::Lex(Sci_PositionU startPos, Sci_Position leng
 // Disable warning for visibleChars
 #pragma clang diagnostic ignored "-Wunused-but-set-variable"
 #endif
+#elif defined(__GNUC__) && __GNUC__ >= 16
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #endif
 
 void SCI_METHOD LexerVisualProlog::Fold(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument* pAccess) {
