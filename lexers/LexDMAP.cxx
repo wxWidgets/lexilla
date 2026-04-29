@@ -27,10 +27,14 @@
 #include "LexerModule.h"
 /***************************************/
 
-#if defined(__clang__)
+#if defined(__has_warning)
 #if __has_warning("-Wunused-but-set-variable")
 // Disable warning for numNonBlank
+#if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-but-set-variable"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#endif
 #endif
 #endif
 
