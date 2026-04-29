@@ -108,6 +108,8 @@ static bool followsKeyword(StyleContext &sc, Accessor &styler) {
 // Disable warning for visibleChars
 #pragma clang diagnostic ignored "-Wunused-but-set-variable"
 #endif
+#elif defined(__GNUC__) && __GNUC__ >= 16
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #endif
 
 static void ColouriseCoffeeScriptDoc(Sci_PositionU startPos, Sci_Position length, int initStyle, WordList *keywordlists[],

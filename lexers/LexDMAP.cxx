@@ -27,15 +27,13 @@
 #include "LexerModule.h"
 /***************************************/
 
-#if defined(__has_warning)
+#if defined(__clang__)
 #if __has_warning("-Wunused-but-set-variable")
 // Disable warning for numNonBlank
-#if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-but-set-variable"
-#elif defined(__GNUC__)
+#endif
+#elif defined(__GNUC__) && __GNUC__ >= 16
 #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
-#endif
-#endif
 #endif
 
 using namespace Lexilla;
