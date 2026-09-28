@@ -612,7 +612,7 @@ $(DIR_O)/LexEscSeq.o: \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
 	../lexlib/StyleContext.h \
-	../lexlib/CharacterSet.h \
+	../lexlib/LexCharacterSet.h \
 	../lexlib/LexerModule.h \
 	../lexlib/OptionSet.h \
 	../lexlib/DefaultLexer.h
